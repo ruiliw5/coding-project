@@ -1,1 +1,3 @@
-Ruilin Wu's past coding projects and assignments.
+Wellcome to Ruilin Wu's collections.
+
+Uploaded projects: 2
