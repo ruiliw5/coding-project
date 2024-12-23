@@ -1,1 +1,1 @@
-Ruilin Wu's past coding projects or assignments.
+Ruilin Wu's past coding projects and assignments.
