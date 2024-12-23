@@ -1,0 +1,683 @@
+---
+title: "Untitled"
+output: html_document
+date: "2024-06-10"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(readr)
+
+# Load datasets
+season0 <- read.csv("season0.csv")
+season1 <- read.csv("season1.csv")
+season2 <- read.csv("season2.csv")
+season3 <- read.csv("season3.csv")
+season4 <- read.csv("season4.csv")
+season5 <- read.csv("season5.csv")
+season6 <- read.csv("season6.csv")
+season7 <- read.csv("season7.csv")
+season8 <- read.csv("season8.csv")
+season9 <- read.csv("season9.csv")
+season10 <- read.csv("season10.csv")
+
+# Set column names
+column_names <- c("id", "player_value", "training_hours", "age", "injuries", "location", "gender", "sport")
+
+# Ensure all datasets have the same column names
+datasets <- list(season0, season1, season2, season3, season4, season5, season6, season7, season8, season9, season10)
+datasets <- lapply(datasets, function(df) {
+  colnames(df) <- column_names
+  return(df)
+})
+
+# Reassign datasets to individual variables with updated column names
+season0 <- datasets[[1]]
+season1 <- datasets[[2]]
+season2 <- datasets[[3]]
+season3 <- datasets[[4]]
+season4 <- datasets[[5]]
+season5 <- datasets[[6]]
+season6 <- datasets[[7]]
+season7 <- datasets[[8]]
+season8 <- datasets[[9]]
+season9 <- datasets[[10]]
+season10 <- datasets[[11]]
+
+# Add season column to each dataset
+season0$season <- 0
+season1$season <- 1
+season2$season <- 2
+season3$season <- 3
+season4$season <- 4
+season5$season <- 5
+season6$season <- 6
+season7$season <- 7
+season8$season <- 8
+season9$season <- 9
+season10$season <- 10
+
+# Combine datasets using rbind
+combined_data <- rbind(season0, season1, season2, season3, season4, season5, season6, season7, season8, season9, season10)
+print(combined_data)
+```
+
+```{r}
+# Ensure columns are treated as characters before parsing
+combined_data <- combined_data %>%
+  mutate(across(c(player_value, training_hours, age, injuries, location, gender, sport), as.character)) %>%
+  mutate(across(where(is.character), ~parse_number(.x, na = c("", "NA"))),
+         sport = case_when(
+           sport == 6 ~ "Boxing",
+           sport == 5 ~ "Baseball",
+           sport == 4 ~ "Tennis",
+           sport == 3 ~ "Soccer",
+           sport == 2 ~ "Football",
+           sport == 1 ~ "Basketball",
+           TRUE ~ as.character(sport)
+         ),
+         gender = case_when(
+           gender == 2 ~ "Male",
+           gender == 1 ~ "Female",
+           TRUE ~ as.character(gender)
+         ),
+         location = case_when(
+           location == 7 ~ "Saudia Arabia",
+           location == 6 ~ "USA",
+           location == 5 ~ "Spain",
+           location == 4 ~ "Germany",
+           location == 3 ~ "France",
+           location == 2 ~ "Italy",
+           location == 1 ~ "UK",
+           TRUE ~ as.character(location)
+         ))
+
+# Print combined_data to check for issues
+print(combined_data)
+
+```
+
+```{r}
+# Convert categorical variables to factors
+combined_data <- combined_data %>%
+  mutate(id = as.factor(id),
+         location = as.factor(location),
+         gender = as.factor(gender),
+         sport = as.factor(sport),
+         season = as.factor(season))
+print(combined_data)
+```
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+
+# Assuming combined_data is already created and contains the combined datasets from season 0 to season 10
+
+# Use the summary function to get an overview of the combined data
+summary_stats <- summary(combined_data)
+
+# Print the summary statistics
+print(summary_stats)
+```
+
+
+```{r}
+#season 0 question 6
+# Load necessary libraries
+library(dplyr)
+library(ggplot2)
+
+# Filter the data to include only season 0
+baseline_data <- combined_data %>% filter(season == 0)
+
+print(baseline_data)
+
+# Summarize numeric variables by different categories
+summary_stats <- baseline_data %>% 
+  select(player_value, training_hours, age, injuries) %>% 
+  summary()
+
+print(summary_stats)
+
+# Check for missing values
+missing_values <- sapply(baseline_data, function(x) sum(is.na(x)))
+print(missing_values)
+```
+```{r}
+#question 6
+# Filter baseline data (season 0)
+baseline_data <- combined_data %>% filter(season == 0)
+
+# Create summary of numeric variables
+summary_baseline <- summary(baseline_data)
+print(summary_baseline)
+
+# Check for missing values
+missing_values <- sapply(baseline_data, function(x) sum(is.na(x)))
+print(missing_values)
+
+# General EDA: Compare numeric variables across different categories
+
+# Load ggplot2 for visualization
+library(ggplot2)
+
+# Player value by gender
+ggplot(baseline_data, aes(x = gender, y = player_value, fill = gender)) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(title = "Player Value by Gender", y = "Player Value")
+
+# Training hours by gender
+ggplot(baseline_data, aes(x = gender, y = training_hours, fill = gender)) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(title = "Training Hours by Gender", y = "Training Hours")
+
+# Player value by sport
+ggplot(baseline_data, aes(x = sport, y = player_value, fill = sport)) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(title = "Player Value by Sport", y = "Player Value")
+
+# Training hours by sport
+ggplot(baseline_data, aes(x = sport, y = training_hours, fill = sport)) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(title = "Training Hours by Sport", y = "Training Hours")
+
+# Age by gender
+ggplot(baseline_data, aes(x = gender, y = age, fill = gender)) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(title = "Age by Gender", y = "Age")
+
+# Age by sport
+ggplot(baseline_data, aes(x = sport, y = age, fill = sport)) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(title = "Age by Sport", y = "Age")
+
+# Injuries by gender
+ggplot(baseline_data, aes(x = gender, y = injuries, fill = gender)) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(title = "Injuries by Gender", y = "Number of Injuries")
+
+# Injuries by sport
+ggplot(baseline_data, aes(x = sport, y = injuries, fill = sport)) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(title = "Injuries by Sport", y = "Number of Injuries")
+
+```
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(ggplot2)
+
+# Assume combined_data is already created as in previous steps
+# Filter the data to include only season 0
+baseline_data <- combined_data %>% filter(season == 0)
+
+# Print the baseline data for verification
+print(baseline_data)
+
+# Summarize numeric variables
+summary_stats <- baseline_data %>% 
+  select(player_value, training_hours, age, injuries) %>% 
+  summary()
+
+# Print summary statistics
+print("Summary Statistics:")
+print(summary_stats)
+
+# Check for missing values
+missing_values <- sapply(baseline_data, function(x) sum(is.na(x)))
+print("Missing Values:")
+print(missing_values)
+
+# Summarize numeric variables by sport
+sport_summary <- baseline_data %>%
+  group_by(sport) %>%
+  summarise(
+    avg_player_value = mean(player_value, na.rm = TRUE),
+    avg_training_hours = mean(training_hours, na.rm = TRUE),
+    avg_age = mean(age, na.rm = TRUE),
+    avg_injuries = mean(injuries, na.rm = TRUE)
+  )
+
+# Print sport summary
+print("Summary by Sport:")
+print(sport_summary)
+
+# Summarize numeric variables by gender
+gender_summary <- baseline_data %>%
+  group_by(gender) %>%
+  summarise(
+    avg_player_value = mean(player_value, na.rm = TRUE),
+    avg_training_hours = mean(training_hours, na.rm = TRUE),
+    avg_age = mean(age, na.rm = TRUE),
+    avg_injuries = mean(injuries, na.rm = TRUE)
+  )
+
+# Print gender summary
+print("Summary by Gender:")
+print(gender_summary)
+
+```
+
+
+
+
+```{r}
+# Set seed for reproducibility
+set.seed(455)
+
+# Sample 10 random IDs from the dataset
+temp <- sample(1:50, 10)
+
+# Filter data for the selected IDs
+selected_data <- combined_data %>%
+  filter(id %in% temp)
+
+# Create the line plot
+ggplot(selected_data, aes(x = season, y = player_value, group = id, color = factor(id))) +
+  geom_line() +
+  geom_point() +
+  theme_minimal() +
+  labs(
+       x = "Season",
+       y = "Player Value",
+       color = "ID") +
+  theme(legend.position = "right")
+```
+
+```{r}
+#question 7
+# Set seed for reproducibility and sample 10 random individuals
+set.seed(455)
+temp <- sample(1:50, 10)
+
+# Filter data for the 10 random individuals across all seasons
+sampled_data <- combined_data %>% filter(id %in% temp)
+
+# Ensure season is treated as a factor
+sampled_data$season <- as.factor(sampled_data$season)
+
+# Create a line plot comparing season against player value for 10 random individuals
+ggplot(sampled_data, aes(x = season, y = player_value, group = id, color = factor(id))) +
+  geom_line() +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "Player Value Across Seasons for 10 Random Individuals",
+       x = "Season",
+       y = "Player Value",
+       color = "ID")
+
+# Display the summary statistics for numeric variables by category
+baseline_data %>% 
+  group_by(sport) %>% 
+  summarise(across(c(player_value, training_hours, age, injuries), list(mean = ~mean(.x, na.rm = TRUE), sd = ~sd(.x, na.rm = TRUE)))) %>% 
+  print()
+
+baseline_data %>% 
+  group_by(gender) %>% 
+  summarise(across(c(player_value, training_hours, age, injuries), list(mean = ~mean(.x, na.rm = TRUE), sd = ~sd(.x, na.rm = TRUE)))) %>% 
+  print()
+
+baseline_data %>% 
+  group_by(location) %>% 
+  summarise(across(c(player_value, training_hours, age, injuries), list(mean = ~mean(.x, na.rm = TRUE), sd = ~sd(.x, na.rm = TRUE)))) %>% 
+  print()
+
+```
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(ggplot2)
+
+# Function to create a plot
+create_plot <- function(data, group_var, title, color_label) {
+  ggplot(data, aes(x = season, y = avg_player_value, group = !!sym(group_var), colour = !!sym(group_var))) +
+    geom_line() +
+    geom_point() +
+    labs(title = title,
+         x = "Season",
+         y = "Average Player Value",
+         colour = color_label) +
+    theme_minimal()
+}
+
+# Prepare the data for plotting by location
+location_data <- combined_data %>%
+  group_by(season, location) %>%
+  summarise(avg_player_value = mean(player_value, na.rm = TRUE)) %>%
+  na.omit()
+
+# Prepare the data for plotting by sport
+sport_data <- combined_data %>%
+  group_by(season, sport) %>%
+  summarise(avg_player_value = mean(player_value, na.rm = TRUE)) %>%
+  na.omit()
+
+# Prepare the data for plotting by gender
+gender_data <- combined_data %>%
+  group_by(season, gender) %>%
+  summarise(avg_player_value = mean(player_value, na.rm = TRUE)) %>%
+  na.omit()
+
+# Create the plots
+plot_location <- create_plot(location_data, "location", "Average Player Value Across Seasons by Location", "Location")
+plot_sport <- create_plot(sport_data, "sport", "Average Player Value Across Seasons by Sport", "Sport")
+plot_gender <- create_plot(gender_data, "gender", "Average Player Value Across Seasons by Gender", "Gender")
+
+# Print the plots
+print(plot_location)
+print(plot_sport)
+print(plot_gender)
+
+```
+
+
+
+```{r}
+#question 8
+# Load necessary libraries
+library(dplyr)
+library(ggplot2)
+
+# Group by location and calculate the average player value for each season
+location_avg <- combined_data %>%
+  group_by(season, location) %>%
+  na.omit() %>%
+  summarise(avg_player_value = mean(player_value, na.rm = TRUE), .groups = 'drop')
+
+# Group by sport and calculate the average player value for each season
+sport_avg <- combined_data %>%
+  group_by(season, sport) %>%
+  na.omit() %>%
+  summarise(avg_player_value = mean(player_value, na.rm = TRUE), .groups = 'drop')
+
+# Group by gender and calculate the average player value for each season
+gender_avg <- combined_data %>%
+  group_by(season, gender) %>%
+  na.omit() %>%
+  summarise(avg_player_value = mean(player_value, na.rm = TRUE), .groups = 'drop')
+
+# Plot for location
+plot_location <- ggplot(location_avg, aes(x = season, y = avg_player_value, group = location, color = location)) +
+  geom_line() +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "Average Player Value Across Seasons by Location",
+       x = "Season",
+       y = "Average Player Value",
+       color = "Location") +
+  scale_x_continuous(breaks = 0:10) +
+  theme(legend.position = "right")
+
+# Plot for sport
+plot_sport <- ggplot(sport_avg, aes(x = season, y = avg_player_value, group = sport, color = sport)) +
+  geom_line() +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "Average Player Value Across Seasons by Sport",
+       x = "Season",
+       y = "Average Player Value",
+       color = "Sport") +
+  scale_x_continuous(breaks = 0:10) +
+  theme(legend.position = "right")
+
+# Plot for gender
+plot_gender <- ggplot(gender_avg, aes(x = season, y = avg_player_value, group = gender, color = gender)) +
+  geom_line() +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "Average Player Value Across Seasons by Gender",
+       x = "Season",
+       y = "Average Player Value",
+       color = "Gender") +
+  scale_x_continuous(breaks = 0:10) +
+  theme(legend.position = "right")
+
+# Display plots in appendix
+print(plot_location)
+print(plot_sport)
+print(plot_gender)
+
+```
+
+```{r}
+#question 9
+# Load necessary libraries
+library(dplyr)
+library(ggplot2)
+
+# Filter the data for season 0
+baseline_data <- combined_data %>%
+  filter(season == 0)
+
+# Select numeric variables for pairs plot
+numeric_vars <- baseline_data %>%
+  select(player_value, training_hours, age, injuries)
+
+# Create the pairs plot
+pairs(numeric_vars, main = "Scatterplot Matrix of Numeric Variables at Baseline")
+
+# Create detailed scatterplots for visual evidence
+
+# Player Value vs. Training Hours
+plot1 <- ggplot(baseline_data, aes(x = training_hours, y = player_value)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "lightblue") +
+  theme_minimal() +
+  labs(title = "Player Value vs. Training Hours at Baseline",
+       x = "Training Hours",
+       y = "Player Value")
+
+# Player Value vs. Age
+plot2 <- ggplot(baseline_data, aes(x = age, y = player_value)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "lightpink") +
+  theme_minimal() +
+  labs(title = "Player Value vs. Age at Baseline",
+       x = "Age",
+       y = "Player Value")
+
+# Player Value vs. Injuries
+plot3 <- ggplot(baseline_data, aes(x = injuries, y = player_value)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "lightgreen") +
+  theme_minimal() +
+  labs(title = "Player Value vs. Injuries at Baseline",
+       x = "Number of Injuries",
+       y = "Player Value")
+
+# Display the plots
+print(plot1)
+print(plot2)
+print(plot3)
+
+
+```
+
+
+```{r}
+#question 10
+# Load necessary libraries
+library(dplyr)
+library(ggplot2)
+
+# Aggregate data to calculate the average player value for each season
+season_avg <- combined_data %>%
+  group_by(season) %>%
+  na.omit() %>%
+  summarise(avg_player_value = mean(player_value, na.rm = TRUE), .groups = 'drop')
+
+# Create the line plot for average player value across seasons
+plot_avg_season <- ggplot(season_avg, aes(x = season, y = avg_player_value)) +
+  geom_line(color = "red") +
+  geom_point(color = "green") +
+  theme_minimal() +
+  labs(title = "Average Player Value Across Seasons",
+       x = "Season",
+       y = "Average Player Value") +
+  scale_x_continuous(breaks = 0:10)
+
+# Display the plot
+print(plot_avg_season)
+
+# Group by sport and season, then calculate the average player value
+sport_avg_season <- combined_data %>%
+  group_by(season, sport) %>%
+  na.omit() %>%
+  summarise(avg_player_value = mean(player_value, na.rm = TRUE), .groups = 'drop')
+
+# Create the plot
+plot_sport_season <- ggplot(sport_avg_season, aes(x = season, y = avg_player_value, color = sport)) +
+  geom_line() +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "Average Player Value Across Seasons by Sport",
+       x = "Season",
+       y = "Average Player Value",
+       color = "Sport") +
+  scale_x_continuous(breaks = 0:10)
+
+# Display the plot
+print(plot_sport_season)
+
+# Group by gender and season, then calculate the average player value
+gender_avg_season <- combined_data %>%
+  group_by(season, gender) %>%
+  na.omit() %>%
+  summarise(avg_player_value = mean(player_value, na.rm = TRUE), .groups = 'drop')
+
+# Create the plot
+plot_gender_season <- ggplot(gender_avg_season, aes(x = season, y = avg_player_value, color = gender)) +
+  geom_line() +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "Average Player Value Across Seasons by Gender",
+       x = "Season",
+       y = "Average Player Value",
+       color = "Gender") +
+  scale_x_continuous(breaks = 0:10)
+
+# Display the plot
+print(plot_gender_season)
+
+```
+
+```{r}
+library(ggplot2)
+
+# Example plot
+ggplot(combined_data, aes(x = age, y = player_value, color = sport)) +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "Player Value by Age and Sport",
+       x = "Age",
+       y = "Player Value")
+# Ensure combined_data has no missing values for the relevant columns
+combined_data_clean <- combined_data %>%
+  filter(!is.na(training_hours), !is.na(player_value), !is.na(sport))
+
+# Plot: Player Value by Training Hours and Sport
+plot_training_hours_sport <- ggplot(combined_data_clean, aes(x = training_hours, y = player_value, color = sport)) +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "Player Value by Training Hours and Sport",
+       x = "Training Hours",
+       y = "Player Value")
+print(plot_training_hours_sport)
+
+# Ensure combined_data has no missing values for the relevant columns
+combined_data_clean <- combined_data %>%
+  filter(!is.na(injuries), !is.na(player_value), !is.na(sport))
+
+# Plot: Player Value by Injuries and Sport
+plot_injuries_sport <- ggplot(combined_data_clean, aes(x = injuries, y = player_value, color = sport)) +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "Player Value by Injuries and Sport",
+       x = "Number of Injuries",
+       y = "Player Value")
+print(plot_injuries_sport)
+
+# Ensure combined_data has no missing values for the relevant columns
+combined_data_clean <- combined_data %>%
+  filter(!is.na(age), !is.na(player_value), !is.na(gender))
+
+# Plot: Player Value by Age and Gender
+plot_age_gender <- ggplot(combined_data_clean, aes(x = age, y = player_value, color = gender)) +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "Player Value by Age and Gender",
+       x = "Age",
+       y = "Player Value")
+print(plot_age_gender)
+
+# Ensure combined_data has no missing values for the relevant columns
+combined_data_clean <- combined_data %>%
+  filter(!is.na(training_hours), !is.na(player_value), !is.na(gender))
+
+# Plot: Player Value by Training Hours and Gender
+plot_training_hours_gender <- ggplot(combined_data_clean, aes(x = training_hours, y = player_value, color = gender)) +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "Player Value by Training Hours and Gender",
+       x = "Training Hours",
+       y = "Player Value")
+print(plot_training_hours_gender)
+
+# Ensure combined_data has no missing values for the relevant columns
+combined_data_clean <- combined_data %>%
+  filter(!is.na(injuries), !is.na(player_value), !is.na(gender))
+
+# Plot: Player Value by Injuries and Gender
+plot_injuries_gender <- ggplot(combined_data_clean, aes(x = injuries, y = player_value, color = gender)) +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "Player Value by Injuries and Gender",
+       x = "Number of Injuries",
+       y = "Player Value")
+print(plot_injuries_gender)
+
+
+```
+
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+
+# Filter data for season 0
+baseline_data <- combined_data %>% filter(season == 0)
+
+# Create pair plots for the relevant variables
+pairs(baseline_data %>% select(player_value, training_hours, age, injuries, location, gender, sport))
+
+
+
+```
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(ggplot2)
+
+# Filter data for season 0
+baseline_data <- combined_data %>% filter(season == 0) 
+
+pairs(baseline_data %>% select(player_value, training_hours, age, injuries, location, gender, sport))
+```
+
