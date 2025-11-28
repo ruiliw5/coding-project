@@ -1,3 +1,4 @@
-Wellcome to Ruilin Wu's collections.
+# ☕ Welcome to Ruilin Wu’s cozy project corner!
 
-Uploaded projects: 2
+So far, you’ll find **3** uploaded projects tucked inside 💛  
+More to come as I keep learning, building, and exploring ✨
