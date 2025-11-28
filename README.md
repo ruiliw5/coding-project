@@ -1,2 +1,36 @@
-CIFAR-10 is a dataset that consists of 60,000 32x32 color images in 10 different classes, with 6000 images per class: airplane, automobile, bird, cat, deer, dog, frog, horse, ship, and truck. 50,000 images for training and 10,000 images for testing. The image below includes one representative image for each class. 
-Designed and implemented machine learning models (KNN, logistic regression) and deep learning architectures (feedforward and convolutional neural networks) to classify the CIFAR-10 dataset, achieving a test accuracy of 41.29%.
+# CIFAR-10 Logistic Regression (CS 178)
+
+**Course:** CS 178 – Machine Learning & Data Mining  
+**Role:** Logistic Regression baseline (my individual contribution)
+
+This repo contains my part of a group project on CIFAR-10 image classification. I implemented a full logistic regression pipeline using PyTorch for data loading and scikit-learn for modeling.
+
+---
+
+## Pipeline
+
+- Load CIFAR-10 with `torchvision.datasets.CIFAR10`
+- Normalize images, convert to NumPy, flatten to 3072-dim vectors
+- Standardize features with `StandardScaler`
+- Split into train / validation / test sets
+- Train multinomial `LogisticRegression` (`solver='lbfgs'`, `penalty='l2'`, tuned `C`, `max_iter`)
+- Evaluate with:
+  - Train / validation / test accuracy (≈ 41% test)
+  - Confusion matrix heatmap
+  - Classification report
+  - Learning curve (training vs. cross-validation score)
+
+---
+
+## Hyperparameter Experiments
+
+I ran multiple configurations varying:
+
+- `C` (regularization)
+- `max_iter`
+- `solver`
+- `tol`
+
+Results are stored in a table and visualized to compare training vs. test accuracy and diagnose under/overfitting.
+
+---
