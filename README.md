@@ -1,4 +1,4 @@
-#### 💼 Java Invoicer Application
+#### Java Invoicer Application
 
 **Completed:** Spring 2025 (UCI – ICS 45J Lab Project)
 
@@ -6,7 +6,7 @@ This is a desktop invoicing system built in Java using Swing. The application al
 
 ---
 
-#### 🔧 Features
+#### Features
 
 ##### Customer Information Panel
 
@@ -28,7 +28,7 @@ This is a desktop invoicing system built in Java using Swing. The application al
 - Event-driven recalculation when UI values change  
 - Modular implementation of state tax rules and coupon logic  
 
-##### 🧪 Testing
+##### Testing
 
 - Tests for total and tax calculations  
 - Tests for coupon effects and edge cases  
@@ -48,6 +48,6 @@ This project strengthened my understanding of:
 
 Ensures reliable behavior across all UI interactions
 
-🎯 Purpose
+Purpose
 
 Built as a major lab assignment for ICS 45J, this project strengthened my understanding of Java OOP, Swing UI development, and event-driven programming.
