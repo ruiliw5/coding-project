@@ -12,5 +12,5 @@ Using Season 0 as a baseline, the project:
 - Compares how player value changes over time for a sample of players  
 - Examines average player value trends across seasons by location, sport, and gender  
 
-The analysis highlights weak to moderate relationships between player value and other variables and shows an overall decline in player value over seasons, with notable differences across groups. :contentReference[oaicite:0]{index=0}
+The analysis highlights weak to moderate relationships between player value and other variables and shows an overall decline in player value over seasons, with notable differences across groups. 
 
