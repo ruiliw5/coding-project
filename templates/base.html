@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}AI Tax Agent Prototype{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a href="{{ url_for('index') }}" class="logo">AI Tax Agent</a>
+      <nav class="header-nav">
+        <a href="{{ url_for('index') }}">Calculate</a>
+        {% if firm_view %}<a href="{{ url_for('firm_history') }}">Client history</a>{% endif %}
+      </nav>
+      <p class="tagline">Prototype — Simplified tax preparation</p>
+    </div>
+  </header>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-messages container">
+        {% for category, message in messages %}
+          <div class="flash flash-{{ category }}" role="alert">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <main class="main-content">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <a href="{{ url_for('firm_login') }}" class="firm-link">Firm portal</a>
+    </div>
+  </footer>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

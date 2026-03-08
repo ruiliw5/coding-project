@@ -1,0 +1,514 @@
+:root {
+  /* Main Palette from Image */
+  --bg-main: #f9fafb;          /* Very light gray background */
+  --card-bg: #ffffff;        /* White for forms/cards */
+  --text-main: #1e293b;      /* Dark gray main text */
+  --text-sub: #6b7280;       /* Lighter gray for taglines/subtitles */
+  
+  /* Primary Green (Accents, Totals) */
+  --accent-green-main: #153d3d;  /* Dark forest green accent from image */
+  --accent-green-light: #d1fae5; /* Very light green for error text border or background hints */
+  
+  /* Primary Secondary (Buttons, Dropdowns) */
+  --btn-primary-bg: #fef3c7;    /* Light yellow-green, cream like "Get Started" button */
+  --btn-primary-text: #1e293b;  /* Dark text on light button */
+  --btn-primary-hover-bg: #fde68a; /* Slightly darker cream for hover */
+  
+  /* System colors */
+  --success: #166534;        /* Forest green for Refund text */
+  --error: #dc2626;          /* Red for Owed and actual errors */
+  --border-form: #cbd5e1;
+  --border-accent: var(--accent-green-main);
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Header & Navigation */
+.site-header {
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 1.5rem 0;
+}
+
+.site-header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 1.75rem;
+  color: var(--accent-green-main); /* Match image dark green logo text */
+  text-decoration: none;
+}
+
+.tagline {
+  color: var(--text-sub);
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.header-nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.header-nav a {
+  color: var(--text-sub);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.header-nav a:hover {
+  color: var(--accent-green-main);
+}
+
+/* Flash Messages */
+.flash {
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+.flash-error { 
+  background: #fee2e2; 
+  color: var(--error);
+  border: 1px solid #fecaca;
+}
+
+.flash-success {
+  background: #d1fae5;
+  color: var(--success);
+  border: 1px solid #86efac;
+}
+
+/* Main Content */
+.main-content {
+  padding: 2rem 0 4rem;
+}
+
+.lead {
+  color: var(--text-sub);
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+/* Forms */
+.tax-form {
+  background: var(--card-bg);
+  padding: 2.5rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.ai-agent-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-right: 1rem;
+}
+
+.ai-agent-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-form);
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.form-group { 
+  margin-bottom: 1.75rem; 
+}
+
+label { 
+  display: block; 
+  font-weight: 500; 
+  margin-bottom: 0.5rem; 
+}
+
+input, select {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--border-form);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.15s ease-in-out;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--accent-green-main);
+  box-shadow: 0 0 0 3px rgba(21, 61, 61, 0.15); /* Subtly darker focus shadow */
+}
+
+.required {
+  color: var(--error);
+}
+
+.field-error {
+  color: var(--error);
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.form-actions {
+  margin-top: 2.5rem;
+}
+
+/* Buttons */
+.btn {
+  padding: 0.875rem 2rem;
+  border-radius: 9999px; /* Pill shape like image buttons */
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+  font-size: 0.95rem;
+}
+
+.btn-primary { 
+  background: var(--btn-primary-bg); 
+  color: var(--btn-primary-text); 
+  border: none; 
+}
+.btn-primary:hover { 
+  background: var(--btn-primary-hover-bg); 
+}
+
+.btn-secondary {
+  background: var(--accent-green-main);
+  color: white;
+  border: none;
+}
+.btn-secondary:hover {
+  background: #1e4d4d; /* Slight darken of dark green accent */
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--text-sub);
+  border: 1px solid var(--border-form);
+}
+.btn-outline:hover {
+  border-color: var(--text-main);
+  color: var(--text-main);
+}
+
+.btn-small {
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+}
+
+.refund-cell { color: var(--success); }
+.owed-cell { color: var(--error); }
+.empty-state { color: var(--text-sub); }
+
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 200px;
+}
+
+.login-box {
+  background: var(--card-bg);
+  padding: 2.5rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 420px;
+  box-sizing: border-box;
+}
+
+.login-box h1 { text-align: center; }
+.login-box .lead { text-align: center; }
+.login-box .tax-form input { width: 100%; box-sizing: border-box; }
+.login-hint { margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-sub); text-align: center; }
+
+.footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+.firm-link { color: var(--text-sub); font-size: 0.9rem; text-decoration: none; }
+.firm-link:hover { color: var(--accent-green-main); }
+
+/* Tax Form Mockup */
+.tax-form-page .btn-primary {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border: none;
+  border-radius: 8px; /* Square off a bit for a financial feel */
+}
+
+.result-actions .btn {
+  margin-right: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.form-disclaimer {
+  font-size: 0.85rem;
+  color: var(--text-sub);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.form-1040 {
+  background: var(--card-bg);
+  max-width: 700px;
+  margin: 0 auto;
+  font-family: 'JetBrains Mono', monospace;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* IRS-style Form 1040 layout */
+.form-1040.irs-style {
+  border: 1px solid #333;
+  padding: 0;
+}
+
+.irs-form-header {
+  background: #1b2f4a;
+  color: white;
+  padding: 1.25rem 2rem;
+  text-align: center;
+}
+
+.irs-agency {
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.25rem;
+}
+
+.irs-form-title {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.irs-form-subtitle {
+  margin: 0.25rem 0 0;
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+
+.irs-meta {
+  margin-top: 0.75rem;
+  font-size: 0.75rem;
+  opacity: 0.9;
+}
+
+.irs-meta span { margin: 0 0.75rem; }
+
+.irs-filing-status { margin-top: 0.5rem; font-size: 0.95rem; }
+
+.irs-form-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.irs-line td {
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #ddd;
+  vertical-align: middle;
+}
+
+.irs-ln {
+  width: 2rem;
+  font-weight: 700;
+  color: #333;
+  text-align: right;
+}
+
+.irs-desc {
+  color: #333;
+  padding-right: 1rem;
+}
+
+.irs-amt {
+  width: 7rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.irs-amt-box {
+  display: inline-block;
+  min-width: 5rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #999;
+  background: #fafafa;
+  font-weight: 500;
+}
+
+.irs-line.irs-subtotal td {
+  border-top: 1px solid #333;
+  font-weight: 600;
+}
+
+.irs-line.irs-total td {
+  border-top: 2px solid #333;
+  padding-top: 0.75rem;
+  font-weight: 700;
+}
+
+.irs-line.irs-refund .irs-amt-box { color: var(--success); }
+.irs-line.irs-owed .irs-amt-box { color: var(--error); }
+
+.irs-signature-block {
+  padding: 2rem;
+  border-top: 1px solid #ddd;
+  font-size: 0.85rem;
+  color: var(--text-sub);
+}
+
+.irs-sig-label { font-weight: 600; margin: 0 0 0.25rem; }
+.irs-sig-note { margin: 0; }
+
+/* Legacy form-1040 classes (kept for compatibility) */
+.form-1040-header { border-bottom: 2px solid var(--border-accent); padding-bottom: 1rem; margin-bottom: 2rem; text-align: center; }
+.form-1040-section { margin-bottom: 2rem; }
+.form-1040-line { display: flex; align-items: center; gap: 1rem; border-bottom: 1px solid #eee; padding: 0.75rem 0; }
+.line-num, .line-label, .line-amount { flex: 0 0 auto; }
+.form-1040-line.total { border-top: 2px solid var(--border-accent); font-weight: bold; }
+.form-1040-line.refund .line-amount { color: var(--success); }
+.form-1040-line.owed .line-amount { color: var(--error); }
+
+.client-info { color: var(--text-sub); font-size: 0.95rem; margin-bottom: 1rem; }
+
+/* Results Page Specifics */
+.results-page .result-summary {
+  background: var(--card-bg);
+  padding: 2.5rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.result-summary.refund .result-amount {
+  color: var(--success);
+}
+
+.result-summary.owed .result-amount {
+  color: var(--error);
+}
+
+.result-summary-main { margin-bottom: 0.5rem; }
+.result-bracket {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text-sub);
+}
+
+.result-label {
+  display: block;
+  font-size: 1rem;
+  color: var(--text-sub);
+  margin-bottom: 0.5rem;
+}
+
+.result-amount {
+  font-size: 2.75rem;
+  font-weight: 700;
+}
+
+.result-details {
+  background: var(--card-bg);
+  padding: 2.5rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  margin-bottom: 2.5rem;
+}
+
+.details-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.details-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.details-table tr:last-child td {
+  border-bottom: none;
+}
+
+.details-table tr.total-row td {
+  border-top: 2px solid var(--border-accent);
+  color: var(--accent-green-main);
+}
+
+.details-table tr td:first-child {
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+.details-table tr td:last-child {
+  text-align: right;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.result-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+
+/* Footer */
+.site-footer {
+  background: white;
+  border-top: 1px solid #e2e8f0;
+  padding: 2rem 0;
+  margin-top: auto;
+  color: var(--text-sub);
+  font-size: 0.9rem;
+}
+
+/* Print styles */
+@media print {
+  body {
+    background: white;
+  }
+  
+  .site-header, .site-footer, .lead, .form-disclaimer, .result-actions {
+    display: none !important;
+  }
+  
+  .container {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .tax-form-page {
+    border: none;
+    box-shadow: none;
+    padding: 0;
+  }
+  
+  .form-1040 {
+    border: none;
+    box-shadow: none;
+    padding: 0;
+  }
+}

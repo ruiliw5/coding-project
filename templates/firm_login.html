@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Firm login — AI Tax Agent{% endblock %}
+
+{% block content %}
+<div class="container login-page">
+  <div class="login-box">
+    <h1>Firm portal</h1>
+    <p class="lead">Sign in with your employee credentials.</p>
+
+    <form method="post" action="{{ url_for('firm_login') }}" class="tax-form">
+      <div class="form-group">
+        <label for="employee_id">Employee ID</label>
+        <input type="text" id="employee_id" name="employee_id" autocomplete="username" placeholder="e.g. emp001" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" autocomplete="current-password" required>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Sign in</button>
+      </div>
+    </form>
+
+    <p class="login-hint">Sample: emp001 / tax2025 or admin / admin123</p>
+  </div>
+</div>
+{% endblock %}

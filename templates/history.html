@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}{% if firm_view %}Firm — Client History{% else %}Calculation History{% endif %} — AI Tax Agent{% endblock %}
+
+{% block content %}
+<div class="container history-page">
+  <h1>{% if firm_view %}Client calculation history{% else %}Calculation History{% endif %}</h1>
+  <p class="lead">{% if firm_view %}All client returns prepared by the firm.{% else %}Past tax calculations stored in the database.{% endif %}</p>
+
+  {% if records %}
+  <div class="history-table-wrap">
+    <table class="details-table" role="table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Filing status</th>
+          <th>Gross income</th>
+          <th>Refund / Owed</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in records %}
+        <tr>
+          <td>{{ r.created_at.strftime('%Y-%m-%d %H:%M') if r.created_at else '—' }}</td>
+          <td>{{ r.client_name or '—' }}</td>
+          <td>{{ r.client_email or '—' }}</td>
+          <td>{{ r.filing_status.replace('_', ' ').title() }}</td>
+          <td>${{ "%.2f"|format(r.gross_income) }}</td>
+          <td class="{% if r.is_refund %}refund-cell{% else %}owed-cell{% endif %}">
+            {% if r.is_refund %}
+              ${{ "%.2f"|format(r.refund_or_owed) }} refund
+            {% else %}
+              ${{ "%.2f"|format(-r.refund_or_owed) }} owed
+            {% endif %}
+          </td>
+          <td><a href="{{ url_for('results_by_id', id=r.id) }}" class="btn btn-small">View</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="empty-state">No calculations yet. <a href="{{ url_for('index') }}">Calculate your tax</a> to get started.</p>
+  {% endif %}
+
+  <div class="result-actions" style="margin-top: 2rem;">
+    <a href="{{ url_for('index') }}" class="btn btn-primary">{% if firm_view %}New client return{% else %}New calculation{% endif %}</a>
+    {% if firm_view %}<a href="{{ url_for('firm_logout') }}" class="btn btn-outline">Log out</a>{% endif %}
+  </div>
+</div>
+{% endblock %}

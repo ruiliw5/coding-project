@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Tax Results — AI Tax Agent{% endblock %}
+
+{% block content %}
+<div class="container results-page">
+  <h1>Your Tax Results</h1>
+  {% if result.client_name or result.client_email %}
+  <p class="client-info">Prepared for: {{ result.client_name or '—' }}{% if result.client_email %} ({{ result.client_email }}){% endif %}</p>
+  {% endif %}
+
+  <div class="result-summary {% if result.is_refund %}refund{% else %}owed{% endif %}">
+    <div class="result-summary-main">
+      {% if result.is_refund %}
+        <span class="result-label">Refund</span>
+        <span class="result-amount">${{ "%.2f"|format(result.refund_or_owed) }}</span>
+      {% else %}
+        <span class="result-label">Amount owed</span>
+        <span class="result-amount">${{ "%.2f"|format(-result.refund_or_owed) }}</span>
+      {% endif %}
+    </div>
+    {% if result.marginal_bracket %}
+    {% if result.marginal_bracket.bracket_label and result.marginal_bracket.bracket_label != 'N/A' %}
+    <p class="result-bracket">Based on taxable income of ${{ "%.2f"|format(result.taxable_income) }}, your marginal tax bracket is <strong>{{ result.marginal_bracket.bracket_label }}</strong> ({{ result.marginal_bracket.bracket_range or '' }})</p>
+    {% else %}
+    <p class="result-bracket">{{ result.marginal_bracket.bracket_range or 'Marginal brackets start at 10%.' }}</p>
+    {% endif %}
+    {% endif %}
+  </div>
+
+  <div class="result-details">
+    <table class="details-table" role="table">
+      <tbody>
+        {% set status_labels = {'single': 'Single', 'married_joint': 'Married filing jointly', 'head_of_household': 'Head of household'} %}
+        <tr><td>Filing status</td><td>{{ status_labels.get(result.filing_status, (result.filing_status or '')|replace('_', ' ')|title) }}</td></tr>
+        <tr><td>Gross income</td><td>${{ "%.2f"|format(result.gross_income) }}</td></tr>
+        <tr><td>Standard deduction</td><td>− ${{ "%.2f"|format(result.standard_deduction) }}</td></tr>
+        <tr><td>Additional deductions</td><td>− ${{ "%.2f"|format(result.additional_deductions) }}</td></tr>
+        <tr><td><strong>Taxable income</strong></td><td><strong>${{ "%.2f"|format(result.taxable_income) }}</strong></td></tr>
+        <tr><td>Tax (before credits)</td><td>${{ "%.2f"|format(result.tax_before_credits) }}</td></tr>
+        <tr><td>Federal tax withheld</td><td>− ${{ "%.2f"|format(result.federal_withheld) }}</td></tr>
+        <tr class="total-row"><td><strong>{% if result.is_refund %}Refund{% else %}Amount owed{% endif %}</strong></td><td><strong>${{ "%.2f"|format(result.refund_or_owed if result.is_refund else -result.refund_or_owed) }}</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="result-actions">
+    <a href="{{ url_for('tax_form') }}" class="btn btn-secondary">View tax return form</a>
+    <a href="{{ url_for('index') }}" class="btn btn-outline">Start over</a>
+  </div>
+</div>
+{% endblock %}

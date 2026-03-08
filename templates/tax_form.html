@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Form 1040 — AI Tax Agent{% endblock %}
+
+{% block content %}
+<div class="container tax-form-page">
+  <p class="form-disclaimer">Simplified prototype. Do not use for actual filing.</p>
+
+  <div class="form-1040 irs-style">
+    <header class="irs-form-header">
+      <div class="irs-agency">Department of the Treasury — Internal Revenue Service</div>
+      <h1 class="irs-form-title">Form 1040</h1>
+      <p class="irs-form-subtitle">U.S. Individual Income Tax Return</p>
+      <div class="irs-meta">
+        <span>OMB No. 1545-0074</span>
+        <span>Tax Year <strong>2025</strong></span>
+      </div>
+      <div class="irs-filing-status">
+        {% set status_labels = {'single': 'Single', 'married_joint': 'Married filing jointly', 'head_of_household': 'Head of household'} %}
+        <strong>Filing status:</strong> {{ status_labels.get(result.filing_status, (result.filing_status or '')|replace('_', ' ')|title) }}
+      </div>
+    </header>
+
+    <table class="irs-form-table" role="presentation">
+      <tbody>
+        <tr class="irs-line"><td class="irs-ln">1</td><td class="irs-desc">Wages, salaries, tips, etc.</td><td class="irs-amt"><span class="irs-amt-box">{{ "%.2f"|format(result.gross_income) }}</span></td></tr>
+        <tr class="irs-line irs-subtotal"><td class="irs-ln">9</td><td class="irs-desc">Total income</td><td class="irs-amt"><span class="irs-amt-box">{{ "%.2f"|format(result.gross_income) }}</span></td></tr>
+        <tr class="irs-line"><td class="irs-ln">11</td><td class="irs-desc">Adjusted gross income</td><td class="irs-amt"><span class="irs-amt-box">{{ "%.2f"|format(result.gross_income) }}</span></td></tr>
+        <tr class="irs-line"><td class="irs-ln">12</td><td class="irs-desc">Standard deduction</td><td class="irs-amt"><span class="irs-amt-box">({{ "%.2f"|format(result.standard_deduction) }})</span></td></tr>
+        <tr class="irs-line"><td class="irs-ln">13</td><td class="irs-desc">Other deductions (Schedule 1)</td><td class="irs-amt"><span class="irs-amt-box">({{ "%.2f"|format(result.additional_deductions) }})</span></td></tr>
+        <tr class="irs-line irs-subtotal"><td class="irs-ln">15</td><td class="irs-desc">Taxable income</td><td class="irs-amt"><span class="irs-amt-box">{{ "%.2f"|format(result.taxable_income) }}</span></td></tr>
+        <tr class="irs-line"><td class="irs-ln">16</td><td class="irs-desc">Tax (see instructions)</td><td class="irs-amt"><span class="irs-amt-box">{{ "%.2f"|format(result.tax_before_credits) }}</span></td></tr>
+        <tr class="irs-line"><td class="irs-ln">19</td><td class="irs-desc">Schedule 2, line 17</td><td class="irs-amt"><span class="irs-amt-box">{{ "%.2f"|format(result.tax_owed) }}</span></td></tr>
+        <tr class="irs-line"><td class="irs-ln">25</td><td class="irs-desc">Federal income tax withheld</td><td class="irs-amt"><span class="irs-amt-box">({{ "%.2f"|format(result.federal_withheld) }})</span></td></tr>
+        <tr class="irs-line irs-total {% if result.is_refund %}irs-refund{% else %}irs-owed{% endif %}"><td class="irs-ln">34</td><td class="irs-desc">{% if result.is_refund %}Overpayment — amount you want refunded{% else %}Amount you owe{% endif %}</td><td class="irs-amt"><span class="irs-amt-box">{{ "%.2f"|format(result.refund_or_owed if result.is_refund else -result.refund_or_owed) }}</span></td></tr>
+      </tbody>
+    </table>
+
+    <div class="irs-signature-block">
+      <p class="irs-sig-label">Sign Here</p>
+      <p class="irs-sig-note">Keep a copy for your records.</p>
+    </div>
+  </div>
+
+  <div class="result-actions">
+    <button type="button" class="btn btn-primary" onclick="window.print()">Print / Save as PDF</button>
+    <a href="{{ url_for('results') }}" class="btn btn-outline">Back to results</a>
+    <a href="{{ url_for('index') }}" class="btn btn-outline">Start over</a>
+  </div>
+</div>
+{% endblock %}
