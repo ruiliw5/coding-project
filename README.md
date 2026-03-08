@@ -15,51 +15,6 @@ A Flask web app for simplified federal income tax calculations (Form 1040-style)
 - **Python 3.10+**
 - **Git** (for cloning)
 
-## Quick Start
-
-### 1. Clone the repo
-
-```bash
-git clone 
-cd tax_ai_agent
-```
-
-### 2. Create and activate a virtual environment
-
-```bash
-python -m venv venv
-```
-
-```bash
-source venv/bin/activate
-```
-
-
-### 3. Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Set up environment variables
-
-Create a `.env` file in the project root:
-
-```bash
-# Required for AI Auto-Fill (optional — app works without it, but AI will be offline)
-GEMINI_API_KEY=your_google_ai_api_key_here
-```
-
-Get a free API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
-
-### 5. Run the app
-
-```bash
-python app.py
-```
-
-Open [http://127.0.0.1:5000](http://127.0.0.1:5000) in your browser.
-
 ---
 
 ## Project structure
@@ -113,26 +68,6 @@ For testing the preparer view:
 - Credentials: `emp001` / `tax2025` or `admin` / `admin123`
 
 **Note:** Replace with real authentication before any production use.
-
----
-
-## Testing
-
-Run the tax engine tests:
-
-```bash
-python test_tax_engine.py
-```
-
----
-
-## Export data
-
-Export stored calculations to CSV:
-
-```bash
-python export_data.py
-```
 
 ---
 
