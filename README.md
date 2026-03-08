@@ -1,6 +1,8 @@
 # AI Tax Agent
 
-A Flask web app for simplified federal income tax calculations (Form 1040-style). Enter your information, get an instant estimate, and optionally use the AI assistant to auto-fill the form from natural language.
+A Flask web app for simplified federal income tax calculations (Form 1040-style). Enter your information, get an instant estimate, and optionally use the AI assistant to auto-fill the form from natural language. 
+
+Sample deployment at AWS: http://18.116.242.216:8000
 
 ## Features
 
