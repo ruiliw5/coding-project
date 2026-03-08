@@ -10,11 +10,6 @@ A Flask web app for simplified federal income tax calculations (Form 1040-style)
 - **Firm portal** — Tax preparers can log in and view client calculation history
 - **2025 brackets** — Uses current-year standard deductions and tax brackets (single, married filing jointly, head of household)
 
-## Prerequisites
-
-- **Python 3.10+**
-- **Git** (for cloning)
-
 ---
 
 ## Project structure
